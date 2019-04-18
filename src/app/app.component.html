@@ -1,0 +1,23 @@
+<form [formGroup]="rulesForm">
+	<mat-form-field>
+		<mat-chip-list #chipList formArrayName="emails">
+			<mat-chip [color]="(item.invalid)?'warn':''" selected *ngFor="let item of emailList; let i=index" [selectable]="true" [removable]="removable"
+			 (removed)="removeEmail(item)" required name="chips">{{item.value}}
+				<mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+			</mat-chip>
+			<input placeholder="enter item " [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes " [matChipInputAddOnBlur]="true "
+			 (matChipInputTokenEnd)="add($event) " />
+       
+		</mat-chip-list>
+	</mat-form-field>
+  
+  <mat-error *ngIf="rulesForm.get('emails').hasError('incorrectEmail')">Invalid email ID</mat-error>
+    
+	{{list}}
+	<button mat-button type="submit " [disabled]="rulesForm.invalid">Submit</button>
+  <div style="padding:20px" *ngIf=rulesForm?.submitted>
+    {{list}}
+    </div>
+</form>
+
+{{rulesForm.get('emails').errors | json}}
